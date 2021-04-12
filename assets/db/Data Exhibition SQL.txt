@@ -1,0 +1,176 @@
+CREATE TABLE admin (
+	id int NOT NULL,
+	nama varchar(50) NOT NULL,
+	keypas varchar(50) NOT NULL,
+	PRIMARY KEY (key)
+);
+
+INSERT INTO admin(id, nama, keypas) VALUES ('{0}', '{1}', '{2}');
+UPDATE admin SET nama = '{1}', keypas = '{2}' WHERE id = '{0}' 
+DELETE FROM admin WHERE id = '{0}' 
+SELECT id, nama, keypas FROM admin ORDER BY id 
+
+CREATE TABLE katalog (
+	id int NOT NULL,
+	nama varchar(50) NOT NULL,
+	PRIMARY KEY (key)
+);
+
+INSERT INTO katalog(id, nama) VALUES ('{0}', '{1}');
+UPDATE katalog SET nama = '{1}' WHERE id = '{0}' 
+DELETE FROM katalog WHERE id = '{0}' 
+SELECT id, nama FROM katalog ORDER BY id 
+
+INSERT INTO katalog(id, nama) VALUES ('1', '2D Konsep Art');
+INSERT INTO katalog(id, nama) VALUES ('2', '2D Animasi');
+INSERT INTO katalog(id, nama) VALUES ('3', '3D Modeling');
+INSERT INTO katalog(id, nama) VALUES ('4', '3D Animasi');
+INSERT INTO katalog(id, nama) VALUES ('5', 'Game Design');
+INSERT INTO katalog(id, nama) VALUES ('6', 'Game Development');
+
+CREATE TABLE studio (
+	id int NOT NULL,
+	nama varchar(50) NOT NULL,
+	dosen varchar(50),
+	PRIMARY KEY (key)
+)
+
+INSERT INTO studio(id, nama) VALUES ('{0}', '{1}');
+UPDATE studio SET nama = '{1}' WHERE id = '{0}' 
+DELETE FROM studio WHERE id = '{0}' 
+SELECT id, nama FROM studio ORDER BY id 
+
+CREATE TABLE peserta (
+	nim char(8) NOT NULL,
+	nama varchar(50) NOT NULL,
+	kelas varchar(50) NOT NULL,
+	idstudio int NOT NULL,
+	PRIMARY KEY (key)
+);
+
+INSERT INTO peserta(nim, nama, kelas) VALUES ('{0}', '{1}', '{2}');
+UPDATE peserta SET nama = '{1}', kelas = '{2}' WHERE nim = '{0}' 
+DELETE FROM peserta WHERE nim = '{0}' 
+SELECT nim, nama, kelas FROM peserta ORDER BY nim 
+
+CREATE TABLE pengunjung (
+	id int NOT NULL,
+	nama varchar(50) NOT NULL,
+	PRIMARY KEY (key)
+);
+
+INSERT INTO pengunjung(id, nama) VALUES ('{0}', '{1}');
+UPDATE pengunjung SET nama = '{1}' WHERE id = '{0}' 
+DELETE FROM pengunjung WHERE id = '{0}' 
+SELECT id, nama FROM pengunjung ORDER BY id 
+
+CREATE TABLE komentar (
+	id int NOT NULL,
+	pesan varchar(50) NOT NULL,
+	idpengunjung int NOT NULL,
+	PRIMARY KEY (key)
+);
+
+INSERT INTO komentar(id, pesan, idpengunjung) VALUES ('{0}', '{1}', '{2}');
+UPDATE komentar SET pesan = '{1}', idpengunjung = '{2}' WHERE id = '{0}' 
+DELETE FROM komentar WHERE id = '{0}' 
+SELECT id, pesan, idpengunjung FROM komentar ORDER BY id 
+
+
+CREATE TABLE produk (
+	id int prim
+	nama
+	deskripsi
+	id_katalog
+	id_studio
+	link_path
+);
+
+Rate
+Vote
+
+---------------------------------------------------------------------------
+
+CREATE TABLE admin (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	nama varchar(50) NOT NULL,
+	username varchar(50) NOT NULL,
+	keypas varchar(50) NOT NULL
+);
+
+CREATE TABLE katalog (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	nama varchar(50) NOT NULL
+);
+
+CREATE TABLE tahun(
+	id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+	tahun varchar(10) not null,
+	tgl_pengesahan date not null
+);
+
+CREATE TABLE studio (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	nama varchar(50) NOT NULL,
+	dosen varchar(50),
+	deskripsi text,
+	token varchar(100),
+	id_katalog int not null,
+	id_tahun int not null,
+	FOREIGN KEY (id_katalog) REFERENCES katalog(id),
+	FOREIGN KEY (id_tahun) REFERENCES tahun(id)
+);
+
+CREATE TABLE peserta (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	nim varchar(10) NOT NULL,
+	nama varchar(50) NOT NULL,
+	kelas varchar(50) NOT NULL,
+	id_studio int NOT NULL,
+	FOREIGN KEY (id_studio) REFERENCES studio(id)
+);
+
+CREATE TABLE pengunjung (
+	nim varchar(10) PRIMARY KEY NOT NULL,
+	nama varchar(50) NOT NULL
+);
+
+CREATE TABLE komentar (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	pesan text NOT NULL,
+	nim_pengunjung varchar(10) NOT NULL,
+	id_studio int NOT NULL,
+	FOREIGN KEY (nim_pengunjung) REFERENCES pengunjung(nim),
+	FOREIGN KEY (id_studio) REFERENCES studio(id)
+);
+
+CREATE TABLE produk (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	nama varchar(50) NOT NULL,
+	deskripsi text NULL,
+	jenis_file varchar(10) NULL,
+	id_studio int NOT NULL,
+	link_path text NOT NULL,
+	FOREIGN KEY (id_studio) REFERENCES studio(id)
+);
+
+CREATE TABLE rating (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	nim_pengunjung varchar(10) NOT NULL,
+	id_produk int NOT NULL,
+	kriteria_1 int NULL,
+	kriteria_2 int NULL,
+	kriteria_3 int NULL,
+	kriteria_4 int NULL,
+	kriteria_5 int NULL,
+	FOREIGN KEY (id_produk) REFERENCES produk(id)
+);
+
+CREATE TABLE voting (
+	id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	nim_pengunjung varchar(10) NOT NULL,
+	id_studio int NOT NULL,
+	id_tahun int NOT NULL,
+	FOREIGN KEY (id_studio) REFERENCES studio(id),
+	FOREIGN KEY (id_tahun) REFERENCES tahun(id)
+);
